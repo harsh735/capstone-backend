@@ -4,9 +4,9 @@ namespace Authentication1.Models
 {
     public class User
     {
-        public int UserID { get; set; }
+        public int UserID { get; set; } = 1006;
 
-        public int RoleID { get; set; }
+        public int? RoleID { get; set; }
 
         public string Address { get; set; }
 
@@ -14,18 +14,17 @@ namespace Authentication1.Models
 
         public string State { get; set; }
 
-        [Required]
         public string Phone { get; set; }
 
         [Required]
         [EmailAddress]
         public string Email { get; set; }
 
-        public string AdvisorID { get; set; }
+        public string? AdvisorID { get; set; }
 
-        public string AgentID { get; set; }
+        public string? AgentID { get; set; }
 
-        public string ClientID { get; set; }
+        public string? ClientID { get; set; }
 
 
         [Required]
@@ -36,17 +35,17 @@ namespace Authentication1.Models
 
         public string Company { get; set; }
 
-        public string SortName { get; set; }
+        public string? SortName { get; set; }
 
         public byte Active { get; set; } = 1;
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
-        public string ModifiedBy { get; set; }
+        public string? ModifiedBy { get; set; }
 
         public DateTime? ModifiedDate { get; set; }
 
-        public bool DeletedFlag { get; set; } = false;
+        public bool? DeletedFlag { get; set; } = false;
 
         [Required]
         public string Password { get; set; }

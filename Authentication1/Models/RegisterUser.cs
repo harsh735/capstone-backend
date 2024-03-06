@@ -4,6 +4,7 @@ namespace Authentication1.Models
 {
     public class RegisterUser
     {
+        public int UserID { get; set; }
         [Required]
         public string FirstName { get; set; }
 

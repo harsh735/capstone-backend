@@ -1,8 +1,11 @@
 using Authentication1.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 namespace Authentication1
 {
     public class Program
@@ -24,6 +27,22 @@ namespace Authentication1
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection"));
 
             });
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidAudience = builder.Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]))
+                };
+            });
+
 
             // Configure authentication
             builder.Services.AddAuthentication(options =>
@@ -54,7 +73,9 @@ namespace Authentication1
 
             app.UseCors(policy =>
             {
-                policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                policy.WithOrigins("http://localhost:3000")
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
             });
 
             app.UseStaticFiles(new StaticFileOptions
@@ -65,17 +86,16 @@ namespace Authentication1
                 })
             });
 
-
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
-            app.UseAuthentication(); // Enable authentication middleware
+
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseHttpsRedirection();
 
             app.MapControllers();
 
