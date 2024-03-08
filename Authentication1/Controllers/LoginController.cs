@@ -28,7 +28,7 @@ namespace Authentication1.Controllers
             var hashedPassword = await HashPasswordAsync(model.Password);
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == hashedPassword);
-
+            var userName = user.FirstName;
             if (user == null)
             {
                 return NotFound(new { message = "Invalid credentials" });
@@ -36,7 +36,7 @@ namespace Authentication1.Controllers
 
             var token = GenerateJwtToken(user);
 
-            return Ok(new { message = $"Welcome, {user.FirstName} {user.LastName}!", token });
+            return Ok(new { message = $"Welcome, {userName} {user.LastName}!", token, userName });
         }
 
 
@@ -59,17 +59,17 @@ namespace Authentication1.Controllers
 
         //working google sso api in react
         [HttpPost("oauth-login")]
-        public IActionResult SSOUser([FromBody] GoogleUserData userData)
+        public IActionResult SSOUser([FromBody] RegisterUser userData)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var existingUser = _context.GoogleUserData.FirstOrDefault(u => u.Email == userData.Email);
+            var existingUser = _context.Users.FirstOrDefault(u => u.Email == userData.Email);
             if (existingUser == null)
             {
-                _context.GoogleUserData.Add(userData);
+                _context.Users.Add(userData);
                 _context.SaveChanges();
             }
 
