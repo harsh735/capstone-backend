@@ -43,7 +43,7 @@ namespace Authentication1.Controllers
 
 
         [HttpPost("addBankDetails")]
-        public async Task<IActionResult> AddBankDetails([FromQuery] string userEmail, [FromBody] UserBankDetails bankDetailsDto)
+        public async Task<IActionResult> AddBankDetails([FromQuery] string userEmail, [FromBody] UserBankDetails bankDetailsDto, IFormFile panFile)
         {
             if (string.IsNullOrEmpty(userEmail))
             {
@@ -60,13 +60,20 @@ namespace Authentication1.Controllers
             {
                 UserID = user.UserID,
                 PanNumber = bankDetailsDto.PanNumber,
-                PanFile = bankDetailsDto.PanFile,
                 BankAccNumber = bankDetailsDto.BankAccNumber,
                 AccHolderName = bankDetailsDto.AccHolderName,
                 BankName = bankDetailsDto.BankName,
                 IFSCCode = bankDetailsDto.IFSCCode
             };
 
+            if (panFile != null && panFile.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await panFile.CopyToAsync(memoryStream);
+                    bankDetails.PanFile = memoryStream.ToArray();
+                }
+            }
             _context.UserBankDetails.Add(bankDetails);
             await _context.SaveChangesAsync();
 
@@ -166,6 +173,65 @@ namespace Authentication1.Controllers
 
             return Ok(new { message = "Investment added successfully", success = true });
         }
+
+
+
+        [HttpPost("deleteInvestment")]
+        public async Task<ActionResult> DeleteInvestment(string userEmail, int investorInfoID)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            var existingInvestment = await _context.InvestmentInfo.FirstOrDefaultAsync(i => i.InvestorInfoID == investorInfoID);
+            if (existingInvestment == null)
+            {
+                return BadRequest("Unable to delete an investment which does not exist!");
+            }
+
+            _context.InvestmentInfo.Remove(existingInvestment);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Investment deleted successfully" });
+        }
+
+
+
+
+        [HttpPost("purchaseSubscription")]
+        public async Task<IActionResult> PurchaseSubscription([FromQuery] string userEmail, [FromBody] Subscriptions newSubscriber)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+            if (user == null)
+            {
+                return BadRequest("User not found.");
+            }
+
+            var existingSubscription = await _context.Subscriptions.FirstOrDefaultAsync(s => s.UserID == user.UserID);
+            if (existingSubscription != null)
+            {
+                return BadRequest("User already has an active subscription.");
+            }
+
+            var newSubscription = new Subscriptions
+            {
+                UserID = user.UserID,
+                SubscriptionID = newSubscriber.SubscriptionID,
+                SubscriptionName = newSubscriber.SubscriptionName,
+                StartDate = DateTime.Now,
+                EndDate = newSubscriber.EndDate,
+                Price = newSubscriber.Price,
+                Active = true
+            };
+
+            _context.Subscriptions.Add(newSubscription);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "New Subscription Added!", subData = newSubscription });
+        }
+
 
 
         [HttpPost("logout")]

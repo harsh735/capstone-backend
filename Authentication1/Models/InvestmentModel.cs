@@ -11,8 +11,8 @@ namespace Authentication1.Models
         public int? UserID { get; set; }
         public string? InvestmentName { get; set; }
         public bool Active { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-        public DateTime ModifiedDate { get; set; } = DateTime.Now;
+        public DateTime? CreatedDate { get; set; } = DateTime.Now;
+        public DateTime? ModifiedDate { get; set; } = DateTime.Now;
         public bool DeleteFlag { get; set; }
         public string? InvestmentType { get; set; }
         public string? Risk { get; set; } // Nullable string

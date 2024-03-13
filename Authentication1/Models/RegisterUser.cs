@@ -9,6 +9,10 @@ namespace Authentication1.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int UserID { get; set; }
+
+        public int? RoleID { get; set; }
+
+
         [Required]
         public string FirstName { get; set; }
 
@@ -31,6 +35,10 @@ namespace Authentication1.Models
         public bool? DeletedFlag { get; set; } = false;
         public byte? Active { get; set; } = 1;
         public DateTime? CreatedDate { get; set; } = DateTime.Now;
+
+        public DateTime? ModifiedDate { get; set; }
+
+        public string? ModifiedBy { get; set; }
 
     }
 }

@@ -28,6 +28,10 @@ namespace Authentication1.Controllers
             var hashedPassword = await HashPasswordAsync(model.Password);
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == hashedPassword);
+            if (user == null)
+            {
+                return NotFound("User not found!");
+            }
             var userName = user.FirstName;
             if (user == null)
             {

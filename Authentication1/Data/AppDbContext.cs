@@ -14,6 +14,8 @@ namespace Authentication1.Data
 
         public DbSet<GoogleUserData> GoogleUserData { get; set; }
 
+        public DbSet<Subscriptions> Subscriptions { get; set; }
+
         public DbSet<InvestmentModel> InvestmentInfo { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
