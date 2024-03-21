@@ -49,7 +49,7 @@ namespace Authentication1.Controllers
 
 
         [HttpPost("addClient")]
-        public async Task<IActionResult> AddClient([FromBody] RegisterUser newClient)
+        public async Task<IActionResult> AddClient(string userEmail, [FromBody] Clients newClient)
         {
             try
             {
@@ -58,20 +58,32 @@ namespace Authentication1.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == newClient.Email);
-                if (user != null)
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+                newClient.UserID = user.UserID;
+
+                var existingClient = await _context.Clients.FirstOrDefaultAsync(c => c.UserID == newClient.UserID && c.AdvisorID == newClient.AdvisorID);
+                if (existingClient != null)
                 {
-                    return Conflict("Client is alredy registered!");
+                    return Conflict("Client already exists!");
                 }
+                _context.Clients.Add(new Clients
+                {
+                    UserID = newClient.UserID,
+                    AdvisorID = newClient.AdvisorID,
+                    TypeOfInvestment = newClient.TypeOfInvestment,
+                    RoleID = newClient.RoleID,
+                    ClientName = newClient.ClientName,
+                    SubscribedOn = newClient.SubscribedOn,
+                    PortfolioValue = newClient.PortfolioValue,
+                });
 
 
-                _context.Users.Add(newClient);
                 await _context.SaveChangesAsync();
                 return Ok(new { message = "Client registered successfully", client = newClient });
             }
             catch (Exception ex)
             {
-                throw new Exception("Error adding client!");
+                throw new Exception("Error adding client!", ex);
             }
         }
 

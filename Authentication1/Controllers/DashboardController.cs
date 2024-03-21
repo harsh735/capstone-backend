@@ -287,6 +287,86 @@ namespace Authentication1.Controllers
 
 
 
+        [HttpPost("newInvestment/FD")]
+        public async Task<ActionResult> AddFDInvestment(string userEmail, [FromBody] FDInvestments newFD)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            newFD.UserID = user.UserID;
+
+            _context.FDInvestments.Add(new FDInvestments
+            {
+                FixedDepositID = newFD.FixedDepositID,
+                UserID = newFD.UserID,
+                Amount = newFD.Amount,
+                PurchaseDate = newFD.PurchaseDate,
+                Type = "Fixed Deposits",
+                Risk = newFD.Risk,
+                RateOfInterest = newFD.RateOfInterest,
+                ExpectedAmount = newFD.ExpectedAmount,
+                FDName = newFD.FDName,
+                FDType = newFD.FDType,
+            });
+
+            _context.InvestmentInfo.Add(new InvestmentModel
+            {
+                Amount = newFD.Amount,
+                UserID = newFD.UserID,
+                InvestmentName = newFD.FDName,
+                Active = true,
+                CreatedDate = DateTime.Now,
+                ModifiedDate = DateTime.Now,
+                DeleteFlag = false,
+                InvestmentType = "Fixed Deposits",
+                Risk = newFD.Risk,
+                ExpectedAmount = (decimal?)newFD.ExpectedAmount,
+            });
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Fixed Deposit investment added successfully", success = true });
+        }
+
+
+
+
+
+        [HttpPost("plansToInvest")]
+        public async Task<ActionResult> AddPlannedInvestment(string userEmail, [FromBody] InvestmentModel newPlanInvest)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            newPlanInvest.UserID = user.UserID;
+
+            _context.InvestmentInfo.Add(new InvestmentModel
+            {
+                Amount = newPlanInvest.Amount,
+                UserID = newPlanInvest.UserID,
+                InvestmentName = newPlanInvest.InvestmentName,
+                Active = true,
+                CreatedDate = DateTime.Now,
+                ModifiedDate = DateTime.Now,
+                DeleteFlag = false,
+                InvestmentType = newPlanInvest.InvestmentType,
+                Risk = newPlanInvest.Risk,
+                ExpectedAmount = (decimal?)newPlanInvest.ExpectedAmount,
+            });
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Fixed Deposit investment added successfully", success = true });
+        }
+
+
+
 
 
 

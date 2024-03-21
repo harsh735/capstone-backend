@@ -35,9 +35,10 @@ namespace Authentication1.Controllers
 
             var roleID = user.RoleID;
             var userName = user.FirstName;
+            var advisorID = user.AdvisorID;
             var token = GenerateJwtToken(user);
 
-            return Ok(new { message = $"Welcome, {userName} {user.LastName}!", token, userName, roleID });
+            return Ok(new { message = $"Welcome, {userName} {user.LastName}!", token, userName, roleID, advisorID });
         }
 
 
@@ -68,6 +69,7 @@ namespace Authentication1.Controllers
             }
 
             var existingUser = _context.Users.FirstOrDefault(u => u.Email == userData.Email);
+            var advisorID = existingUser.AdvisorID;
             var roleID = existingUser.RoleID;
             if (existingUser == null)
             {
@@ -75,7 +77,7 @@ namespace Authentication1.Controllers
                 _context.SaveChanges();
             }
 
-            return Ok(new { message = "User logged in successfully", roleID });
+            return Ok(new { message = "User logged in successfully", roleID, advisorID });
         }
 
         private async Task<string> HashPasswordAsync(string password)

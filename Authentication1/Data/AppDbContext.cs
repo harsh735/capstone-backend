@@ -23,6 +23,7 @@ namespace Authentication1.Data
         public DbSet<GoldInvestments> GoldInvestments { get; set; }
 
         public DbSet<BondsInvestments> BondsInvestments { get; set; }
+        public DbSet<FDInvestments> FDInvestments { get; set; }
 
         public DbSet<Clients> Clients { get; set; }
         public DbSet<RequestPlan> RequestPlans { get; set; }
@@ -32,6 +33,7 @@ namespace Authentication1.Data
         {
             modelBuilder.Entity<RegisterUser>().HasKey(e => e.Email);
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<FDInvestments>().Property(p => p.FixedDepositID).ValueGeneratedNever();
         }
     }
 
