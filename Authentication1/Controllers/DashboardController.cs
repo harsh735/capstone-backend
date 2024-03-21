@@ -146,7 +146,7 @@ namespace Authentication1.Controllers
 
 
         [HttpPost("newInvestment/gold")]
-        public async Task<ActionResult> AddGoldInvestment(string userEmail, [FromBody] InvestmentModel investmentModel)
+        public async Task<ActionResult> AddGoldInvestment(string userEmail, [FromBody] GoldInvestments goldInvestment)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
             if (user == null)
@@ -154,25 +154,139 @@ namespace Authentication1.Controllers
                 return BadRequest("User not found");
             }
 
-            investmentModel.UserID = user.UserID;
+            goldInvestment.UserID = user.UserID;
+
+            _context.GoldInvestments.Add(new GoldInvestments
+            {
+                Amount = goldInvestment.Amount ?? 0,
+                UserID = goldInvestment.UserID,
+                PurchaseDate = goldInvestment.PurchaseDate,
+                Type = "Gold",
+                Risk = goldInvestment.Risk,
+                Frequency = goldInvestment.Frequency,
+                Timeframe = goldInvestment.Timeframe,
+                ExpectedAmount = goldInvestment.ExpectedAmount,
+            });
 
             _context.InvestmentInfo.Add(new InvestmentModel
             {
-                Amount = investmentModel.Amount ?? 0,
-                UserID = investmentModel.UserID,
-                InvestmentName = investmentModel.InvestmentName,
-                Active = investmentModel.Active,
+                Amount = goldInvestment.Amount,
+                UserID = goldInvestment.UserID,
+                InvestmentName = "Digital Gold",
+                Active = true,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now,
-                DeleteFlag = investmentModel.DeleteFlag,
-                InvestmentType = investmentModel.InvestmentType,
-                Risk = investmentModel.Risk,
-                ExpectedAmount = investmentModel.Amount * 1.5m ?? 0
+                DeleteFlag = false,
+                InvestmentType = "Gold",
+                Risk = goldInvestment.Risk,
             });
+
+
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Investment added successfully", success = true });
         }
+
+
+
+
+
+        [HttpPost("newInvestment/mutualFunds")]
+        public async Task<ActionResult> AddMutualFundInvestment(string userEmail, [FromBody] MutualFundsInvestments mutualFundInvestmentModel)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            mutualFundInvestmentModel.UserID = user.UserID;
+
+            _context.MutualFundsInvestments.Add(new MutualFundsInvestments
+            {
+                UserID = mutualFundInvestmentModel.UserID,
+                Amount = mutualFundInvestmentModel.Amount,
+                PurchaseDate = mutualFundInvestmentModel.PurchaseDate,
+                Type = "Mutual Funds",
+                Risk = mutualFundInvestmentModel.Risk,
+                ExpectedAmount = mutualFundInvestmentModel.ExpectedAmount,
+                MFName = mutualFundInvestmentModel.MFName,
+                MFType = mutualFundInvestmentModel.MFType,
+                NAV = mutualFundInvestmentModel.NAV,
+            });
+
+            _context.InvestmentInfo.Add(new InvestmentModel
+            {
+                Amount = mutualFundInvestmentModel.Amount,
+                UserID = mutualFundInvestmentModel.UserID,
+                InvestmentName = mutualFundInvestmentModel.MFName,
+                Active = true,
+                CreatedDate = DateTime.Now,
+                ModifiedDate = DateTime.Now,
+                DeleteFlag = false,
+                InvestmentType = "Mutual Funds",
+                Risk = mutualFundInvestmentModel.Risk,
+                ExpectedAmount = mutualFundInvestmentModel.ExpectedAmount
+            });
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Mutual fund investment added successfully", success = true });
+        }
+
+
+
+
+
+
+        [HttpPost("newInvestment/bonds")]
+        public async Task<ActionResult> AddBondsInvestment(string userEmail, [FromBody] BondsInvestments newBonds)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            newBonds.UserID = user.UserID;
+
+            _context.BondsInvestments.Add(new BondsInvestments
+            {
+                UserID = newBonds.UserID,
+                Amount = newBonds.Amount,
+                PurchaseDate = newBonds.PurchaseDate,
+                Type = "Bonds",
+                Risk = newBonds.Risk,
+                ExpectedReturn = newBonds.ExpectedReturn,
+                BondName = newBonds.BondName,
+                Series = newBonds.Series,
+                CouponValue = newBonds.CouponValue,
+                Credit = newBonds.Credit,
+                MaturityDate = newBonds.MaturityDate,
+            });
+
+            _context.InvestmentInfo.Add(new InvestmentModel
+            {
+                Amount = newBonds.Amount,
+                UserID = newBonds.UserID,
+                InvestmentName = newBonds.BondName,
+                Active = true,
+                CreatedDate = DateTime.Now,
+                ModifiedDate = DateTime.Now,
+                DeleteFlag = false,
+                InvestmentType = "Bonds",
+                Risk = newBonds.Risk,
+                ExpectedAmount = (decimal?)newBonds.ExpectedReturn * newBonds.Amount,
+            });
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Mutual fund investment added successfully", success = true });
+        }
+
+
+
+
 
 
 
@@ -230,6 +344,130 @@ namespace Authentication1.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "New Subscription Added!", subData = newSubscription });
+        }
+
+
+
+        [HttpPost("updateInvestment")]
+        public async Task<IActionResult> AddInvestment([FromQuery] string userEmail, [FromBody] InvestmentModel updateInvestment)
+        {
+            try
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+                if (user == null)
+                {
+                    return NotFound($"User with email {userEmail} not found.");
+                }
+
+
+                var investmentInfo = new InvestmentModel
+                {
+                    UserID = user.UserID,
+                    InvestmentName = updateInvestment.InvestmentName,
+                    InvestmentType = updateInvestment.InvestmentType,
+                    Amount = updateInvestment.Amount,
+                    Risk = updateInvestment.Risk,
+                    Active = true,
+                    DeleteFlag = true,
+                };
+
+                _context.InvestmentInfo.Add(investmentInfo);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = "Investment added successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while adding the investment" });
+            }
+        }
+
+
+
+        [HttpPost("requestPlan")]
+        public async Task<IActionResult> AddNewPlan(string userEmail, [FromBody] RequestPlan plan)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(userEmail) || plan == null)
+                {
+                    return BadRequest("Invalid request parameters");
+                }
+
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                var requestPlan = new RequestPlan
+                {
+                    UserID = user.UserID,
+                    AdvisorID = plan.AdvisorID,
+                    InvestmentName = plan?.InvestmentName,
+                    InvestmentType = plan?.InvestmentType,
+                    Amount = plan.Amount ?? 0,
+                    Risk = plan.Risk,
+                    Status = "Pending",
+                    StartDate = DateTime.Now
+                };
+
+                var advisorPlan = new AdvisorPlan
+                {
+                    UserID = user.UserID,
+                    AdvisorID = plan.AdvisorID,
+                    InvestmentName = plan?.InvestmentName,
+                    InvestmentType = plan?.InvestmentType,
+                    Amount = plan.Amount ?? 0,
+                    Risk = plan.Risk,
+                    Status = "Pending",
+                    StartDate = DateTime.Now
+                };
+
+                _context.RequestPlans.Add(requestPlan);
+                _context.AdvisorPlans.Add(advisorPlan);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { message = "New Investment Plan added successfully" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+
+                return StatusCode(500, "An error occurred while processing the request");
+            }
+        }
+
+
+
+
+        [HttpGet("viewPlans")]
+        public async Task<ActionResult<IEnumerable<RequestPlan>>> GetPlans(int advisorId)
+        {
+            var allPlans = await _context.RequestPlans.Where(u => u.AdvisorID == advisorId).ToListAsync();
+            return Ok(new { allPlans });
+        }
+
+
+        [HttpGet("viewAdvisorPlans")]
+        public async Task<ActionResult<IEnumerable<AdvisorPlan>>> GetAdvisorPlans(int advisorId)
+        {
+            var allPlans = await _context.AdvisorPlans.Where(u => u.AdvisorID == advisorId).ToListAsync();
+            return Ok(new { allPlans });
+        }
+
+
+        [HttpGet("getAdvisors")]
+        public async Task<ActionResult<IEnumerable<User>>> GetAdvisors()
+        {
+            var advisors = await _context.Users.Where(u => u.RoleID == 1337).ToListAsync();
+
+            if (advisors == null || advisors.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(advisors);
         }
 
 

@@ -17,6 +17,17 @@ namespace Authentication1.Data
         public DbSet<Subscriptions> Subscriptions { get; set; }
 
         public DbSet<InvestmentModel> InvestmentInfo { get; set; }
+
+        public DbSet<MutualFundsInvestments> MutualFundsInvestments { get; set; }
+
+        public DbSet<GoldInvestments> GoldInvestments { get; set; }
+
+        public DbSet<BondsInvestments> BondsInvestments { get; set; }
+
+        public DbSet<Clients> Clients { get; set; }
+        public DbSet<RequestPlan> RequestPlans { get; set; }
+        public DbSet<AdvisorPlan> AdvisorPlans { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<RegisterUser>().HasKey(e => e.Email);

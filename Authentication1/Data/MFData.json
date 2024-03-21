@@ -1,0 +1,172 @@
+[
+  {
+    "schemeCode": 100027,
+    "schemeName": "Grindlays Super Saver Income Fund-GSSIF-Half Yearly Dividend",
+    "price": 150.25,
+    "date": "2024-03-16",
+    "assetClass": "Income Fund",
+    "dividendFrequency": "Half Yearly",
+    "dividendType": "Dividend",
+    "riskProfile": "medium"
+  },
+  {
+    "schemeCode": 100028,
+    "schemeName": "Grindlays Super Saver Income Fund-GSSIF-Quaterly Dividend",
+    "price": 170.50,
+    "date": "2024-03-16",
+    "assetClass": "Income Fund",
+    "dividendFrequency": "Quarterly",
+    "dividendType": "Dividend",
+    "riskProfile": "medium"
+  },
+  {
+    "schemeCode": 100029,
+    "schemeName": "Grindlays Super Saver Income Fund-GSSIF-Growth",
+    "price": 210.80,
+    "date": "2024-03-16",
+    "assetClass": "Income Fund",
+    "dividendFrequency": "N/A",
+    "dividendType": "N/A",
+    "riskProfile": "high"
+  },
+  {
+    "schemeCode": 100030,
+    "schemeName": "Grindlays Super Saver Income Fund-GSSIF-Annual Dividend",
+    "price": 190.60,
+    "date": "2024-03-16",
+    "assetClass": "Income Fund",
+    "dividendFrequency": "Annual",
+    "dividendType": "Dividend",
+    "riskProfile": "medium"
+  },
+  {
+    "schemeCode": 100031,
+    "schemeName": "Grindlays Super Saver Income Fund-GSSIF - ST-Dividend",
+    "price": 110.75,
+    "date": "2024-03-16",
+    "assetClass": "Income Fund",
+    "dividendFrequency": "Short Term",
+    "dividendType": "Dividend",
+    "riskProfile": "low"
+  },
+  {
+    "schemeCode": 100032,
+    "schemeName": "Grindlays Super Saver Income Fund-GSSIF - ST-Growth",
+    "price": 130.90,
+    "date": "2024-03-16",
+    "assetClass": "Income Fund",
+    "dividendFrequency": "N/A",
+    "dividendType": "N/A",
+    "riskProfile": "low"
+  },
+  {
+    "schemeCode": 100033,
+    "schemeName": "Aditya Birla Sun Life Equity Advantage Fund - Regular Growth",
+    "price": 250.40,
+    "date": "2024-03-16",
+    "assetClass": "Equity Fund",
+    "dividendFrequency": "N/A",
+    "dividendType": "N/A",
+    "riskProfile": "high"
+  },
+  {
+    "schemeCode": 100034,
+    "schemeName": "Aditya Birla Sun Life Equity Advantage Fund -Regular - IDCW",
+    "price": 280.60,
+    "date": "2024-03-16",
+    "assetClass": "Equity Fund",
+    "dividendFrequency": "N/A",
+    "dividendType": "N/A",
+    "riskProfile": "high"
+  },
+  {
+    "schemeCode": 100034,
+    "schemeName": "Aditya Birla Sun Life Equity Advantage Fund -Regular Dividend",
+    "price": 290.75,
+    "date": "2024-03-16",
+    "assetClass": "Equity Fund",
+    "dividendFrequency": "N/A",
+    "dividendType": "Dividend",
+    "riskProfile": "high"
+  },
+  {
+    "schemeCode": 100035,
+    "schemeName": "Birla Sun Life Freedom Fund-Plan A (Dividend)",
+    "price": 180.25,
+    "date": "2024-03-16",
+    "assetClass": "Equity Fund",
+    "dividendFrequency": "N/A",
+    "dividendType": "Dividend",
+    "riskProfile": "high"
+  },
+  {
+    "schemeCode": 100036,
+    "schemeName": "Birla Sun Life Freedom Fund-Plan B (Growth)",
+    "price": 220.80,
+    "date": "2024-03-16",
+    "assetClass": "Equity Fund",
+    "dividendFrequency": "N/A",
+    "dividendType": "N/A",
+    "riskProfile": "high"
+  },
+  {
+    "schemeCode": 100037,
+    "schemeName": "Aditya Birla Sun Life Income Fund - Regular - Quarterly IDCW",
+    "price": 150.20,
+    "date": "2024-03-16",
+    "assetClass": "Income Fund",
+    "dividendFrequency": "Quarterly",
+    "dividendType": "Dividend",
+    "riskProfile": "medium"
+  },
+  {
+    "schemeCode": 100037,
+    "schemeName": "Aditya Birla Sun Life Income Fund - Quarterly Dividend - Regular Plan",
+    "price": 160.50,
+    "date": "2024-03-16",
+    "assetClass": "Income Fund",
+    "dividendFrequency": "Quarterly",
+    "dividendType": "Dividend",
+    "riskProfile": "medium"
+  },
+  {
+    "schemeCode": 100038,
+    "schemeName": "Aditya Birla Sun Life Income Fund - Growth - Regular Plan",
+    "price": 180.90,
+    "date": "2024-03-16",
+    "assetClass": "Income Fund",
+    "dividendFrequency": "N/A",
+    "dividendType": "N/A",
+    "riskProfile": "medium"
+  },
+  {
+    "schemeCode": 100041,
+    "schemeName": "Aditya Birla Sun Life Liquid Fund - Institutional Dividend",
+    "price": 100.50,
+    "date": "2024-03-16",
+    "assetClass": "Liquid Fund",
+    "dividendFrequency": "N/A",
+    "dividendType": "Dividend",
+    "riskProfile": "low"
+  },
+  {
+    "schemeCode": 100041,
+    "schemeName": "Aditya Birla Sun Life Liquid Fund -Institutional - IDCW",
+    "price": 102.70,
+    "date": "2024-03-16",
+    "assetClass": "Liquid Fund",
+    "dividendFrequency": "N/A",
+    "dividendType": "N/A",
+    "riskProfile": "low"
+  },
+  {
+    "schemeCode": 100042,
+    "schemeName": "Aditya Birla Sun Life Liquid Fund-Retail (Growth)",
+    "price": 102.80,
+    "date": "2024-03-16",
+    "assetClass": "Liquid Fund",
+    "dividendFrequency": "N/A",
+    "dividendType": "N/A",
+    "riskProfile": "low"
+  }
+]

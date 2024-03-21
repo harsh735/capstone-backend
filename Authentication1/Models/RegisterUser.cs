@@ -13,6 +13,9 @@ namespace Authentication1.Models
         public int? RoleID { get; set; }
 
 
+        public int? AdvisorID { get; set; }
+
+
         [Required]
         public string FirstName { get; set; }
 

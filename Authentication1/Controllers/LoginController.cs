@@ -30,17 +30,14 @@ namespace Authentication1.Controllers
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == hashedPassword);
             if (user == null)
             {
-                return NotFound("User not found!");
-            }
-            var userName = user.FirstName;
-            if (user == null)
-            {
                 return NotFound(new { message = "Invalid credentials" });
             }
 
+            var roleID = user.RoleID;
+            var userName = user.FirstName;
             var token = GenerateJwtToken(user);
 
-            return Ok(new { message = $"Welcome, {userName} {user.LastName}!", token, userName });
+            return Ok(new { message = $"Welcome, {userName} {user.LastName}!", token, userName, roleID });
         }
 
 
@@ -71,13 +68,14 @@ namespace Authentication1.Controllers
             }
 
             var existingUser = _context.Users.FirstOrDefault(u => u.Email == userData.Email);
+            var roleID = existingUser.RoleID;
             if (existingUser == null)
             {
                 _context.Users.Add(userData);
                 _context.SaveChanges();
             }
 
-            return Ok("User logged in successfully");
+            return Ok(new { message = "User logged in successfully", roleID });
         }
 
         private async Task<string> HashPasswordAsync(string password)

@@ -25,7 +25,25 @@ namespace Authentication1.Controllers
         //   var user = await _context.Users.FirstOrDefaultAsync(u => u.)
         //}
 
+        [HttpGet("viewClients")]
+        public async Task<IActionResult> GetClientsByEmail(string userEmail)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
+
+            var clients = await _context.Clients.Where(c => c.AdvisorID == user.AdvisorID).ToListAsync();
+
+            if (clients == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new { message = "Clients fetched successfully", clients, success = true });
+        }
 
 
 
